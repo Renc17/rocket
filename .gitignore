@@ -27,3 +27,6 @@
 # IDE
 **/.idea
 **/.vscode
+
+#build
+dist
