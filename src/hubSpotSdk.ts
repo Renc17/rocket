@@ -16,7 +16,21 @@ class HubSpotSdk {
     return HubSpotSdk.instance;
   }
 
-  getAllCompanies() {
-    return this.hubSpotClient.crm.companies.getAll(100);
+  getAllCompanies(args: {
+    limit?: number;
+    after?: string;
+    properties?: string[];
+    propertiesWithHistory?: string[];
+    associations?: string[];
+    archived?: boolean;
+  }) {
+    return this.hubSpotClient.crm.companies.getAll(
+      args.limit,
+      args.after,
+      args.properties,
+      args.propertiesWithHistory,
+      args.associations,
+      args.archived
+    );
   }
 }
