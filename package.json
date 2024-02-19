@@ -1,11 +1,21 @@
 {
   "name": "rocket",
-  "version": "1.0.0",
+  "version": "0.0.1",
+  "repository": "git@github.com:Renc17/rocket.git",
   "description": "Hubspot to CRM API connector",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "rimraf dist && tsc",
+    "prepare": "./node_modules/.bin/husky install"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.2",
+    "prettier": "3.2.5"
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
+  }
 }
