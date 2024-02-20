@@ -1,6 +1,6 @@
 import * as hubspot from '@hubspot/api-client';
 
-class HubSpotSdk {
+export class HubSpotSdk {
   private static instance: HubSpotSdk;
   private hubSpotClient: hubspot.Client;
 
@@ -13,10 +13,11 @@ class HubSpotSdk {
   static getInstances() {
     if (HubSpotSdk.instance) return HubSpotSdk.instance;
     HubSpotSdk.instance = new HubSpotSdk();
+    console.log('HubSpotSdk initialized');
     return HubSpotSdk.instance;
   }
 
-  getAllCompanies(args: {
+  async getAllCompanies(args: {
     limit?: number;
     after?: string;
     properties?: string[];
@@ -24,7 +25,7 @@ class HubSpotSdk {
     associations?: string[];
     archived?: boolean;
   }) {
-    return this.hubSpotClient.crm.companies.getAll(
+    return await this.hubSpotClient.crm.companies.basicApi.getPage(
       args.limit,
       args.after,
       args.properties,
