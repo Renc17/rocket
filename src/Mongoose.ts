@@ -1,16 +1,20 @@
 import { Mongoose, Model } from 'mongoose';
 import { company } from './models/company';
+import { HubSpotSdk } from './hubSpotSdk';
+import { CollectionResponseSimplePublicObjectWithAssociationsForwardPaging } from '@hubspot/api-client/lib/codegen/crm/deals';
 
 export class MongooseAdapter {
   private static instance: MongooseAdapter;
   private mongoose: Mongoose;
   private connectionString: string;
+  private hubSpotSdk: HubSpotSdk;
   models: { [name: string]: Model<any> } = {};
 
   constructor() {
     this.mongoose = new Mongoose();
     this.connectionString =
       process.env.MONGO_CONNECTION_STRING ?? 'mongodb://localhost:27017';
+    this.hubSpotSdk = HubSpotSdk.getInstances();
     console.log('MongooseAdapter created');
   }
 
@@ -45,5 +49,56 @@ export class MongooseAdapter {
 
   async registerSchemas() {
     this.models['Company'] = this.mongoose.model('Company', company);
+  }
+
+  async populate() {
+    let data = await this.hubSpotSdk
+      .getAllCompanies({ limit: 100 })
+      .then(companies => {
+        return {
+          next: companies.paging?.next?.after,
+          results: this.companiesTransform(companies),
+        };
+      });
+    await this.models['Company'].collection.insertMany(data.results, {
+      ordered: false,
+    });
+
+    while (data.next) {
+      data = await this.hubSpotSdk
+        .getAllCompanies({
+          after: data.next,
+          limit: 100,
+        })
+        .then(companies => {
+          return {
+            next: companies.paging?.next?.after,
+            results: this.companiesTransform(companies),
+          };
+        });
+      await this.models['Company'].collection.insertMany(data.results, {
+        ordered: false,
+      });
+    }
+  }
+
+  private companiesTransform(
+    companies: CollectionResponseSimplePublicObjectWithAssociationsForwardPaging
+  ) {
+    return companies.results.flatMap(company => {
+      if (!company.properties.name) return [];
+      return {
+        name: company.properties.name,
+        ...(company.properties.domain && {
+          domain: company.properties.domain,
+        }),
+        hs: {
+          id: company.id,
+          createdAt: company.createdAt,
+          updatedAt: company.updatedAt,
+        },
+        archived: company.archived,
+      };
+    });
   }
 }
