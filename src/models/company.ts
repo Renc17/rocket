@@ -2,8 +2,9 @@ import { Schema } from 'mongoose';
 
 export const company = new Schema({
   name: { type: String, required: true },
-  domain: { type: String, required: true, unique: true },
+  domain: { type: String },
   hs: {
+    id: { type: String, required: true },
     createdAt: { type: Date, required: true },
     updatedAt: { type: Date, required: true },
   },
