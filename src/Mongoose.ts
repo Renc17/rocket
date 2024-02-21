@@ -2,6 +2,7 @@ import { Mongoose, Model } from 'mongoose';
 import { company } from './models/company';
 import { HubSpotSdk } from './hubSpotSdk';
 import { CollectionResponseSimplePublicObjectWithAssociationsForwardPaging } from '@hubspot/api-client/lib/codegen/crm/companies';
+import { HubSpotData } from './types';
 
 export class MongooseAdapter {
   private static instance: MongooseAdapter;
@@ -52,34 +53,22 @@ export class MongooseAdapter {
   }
 
   async populate(options?: { after?: string }) {
-    let data = await this.hubSpotSdk
-      .getAllCompanies({ limit: 100, after: options?.after })
-      .then(companies => {
-        return {
-          next: companies.paging?.next?.after,
-          results: this.companiesTransform(companies),
-        };
-      });
-    await this.models['Company'].collection.insertMany(data.results, {
-      ordered: false,
-    });
-
-    while (data.next) {
+    let data: HubSpotData = {};
+    do {
       data = await this.hubSpotSdk
-        .getAllCompanies({
-          after: data.next,
-          limit: 100,
-        })
+        .getAllCompanies({ limit: 100, after: data?.next ?? options?.after })
         .then(companies => {
           return {
             next: companies.paging?.next?.after,
             results: this.companiesTransform(companies),
           };
         });
-      await this.models['Company'].collection.insertMany(data.results, {
-        ordered: false,
-      });
-    }
+      await this.models['Company']
+        .insertMany(data.results, {
+          ordered: false,
+        })
+        .catch(() => {});
+    } while (data.next);
   }
 
   private companiesTransform(
