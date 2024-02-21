@@ -10,7 +10,7 @@ export class HubSpotSdk {
     });
   }
 
-  static getInstances() {
+  static getInstance() {
     if (HubSpotSdk.instance) return HubSpotSdk.instance;
     HubSpotSdk.instance = new HubSpotSdk();
     console.log('HubSpotSdk initialized');

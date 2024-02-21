@@ -15,7 +15,7 @@ export class MongooseAdapter {
     this.mongoose = new Mongoose();
     this.connectionString =
       process.env.MONGO_CONNECTION_STRING ?? 'mongodb://localhost:27017';
-    this.hubSpotSdk = HubSpotSdk.getInstances();
+    this.hubSpotSdk = HubSpotSdk.getInstance();
     console.log('MongooseAdapter created');
   }
 
