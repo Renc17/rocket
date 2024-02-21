@@ -124,16 +124,6 @@ export class MongooseAdapter {
   }
 
   async getCompanyById(args: { id: string }) {
-    const query = await this.models['Company']
-      .findOne({ _id: args.id })
-      .lean()
-      .exec();
-    const totalCount = await this.models['Company'].countDocuments({
-      _id: args.id,
-    });
-    return {
-      company: query,
-      totalCount,
-    };
+    return await this.models['Company'].findOne({ _id: args.id }).lean().exec();
   }
 }
