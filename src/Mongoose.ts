@@ -1,7 +1,7 @@
 import { Mongoose, Model } from 'mongoose';
 import { company } from './models/company';
 import { HubSpotSdk } from './hubSpotSdk';
-import { CollectionResponseSimplePublicObjectWithAssociationsForwardPaging } from '@hubspot/api-client/lib/codegen/crm/deals';
+import { CollectionResponseSimplePublicObjectWithAssociationsForwardPaging } from '@hubspot/api-client/lib/codegen/crm/companies';
 
 export class MongooseAdapter {
   private static instance: MongooseAdapter;
@@ -100,5 +100,30 @@ export class MongooseAdapter {
         archived: company.archived,
       };
     });
+  }
+
+  // API methods
+
+  async getCompanies(
+    query: { [p: string]: any },
+    options: {
+      skip?: number;
+      limit?: number;
+      // sort
+    }
+  ) {
+    const companies = await this.models['Company']
+      .find(query, undefined, { skip: options.skip, limit: options.limit })
+      .lean()
+      .exec();
+    const totalCount = await this.models['Company'].countDocuments({});
+    return {
+      companies,
+      totalCount,
+    };
+  }
+
+  async getCompanyById(args: { id: string }) {
+    return await this.models['Company'].findOne({ _id: args.id }).lean().exec();
   }
 }
