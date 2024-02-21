@@ -15,7 +15,6 @@ export class QueueController {
       maxRetriesPerRequest: null,
     });
     this.queue = this.initialize();
-    this.initialize();
   }
 
   static getInstance() {
@@ -53,7 +52,7 @@ export class QueueController {
         repeat: {
           pattern: '0 0 8 * * *',
           tz: 'Europe/Athens',
-          startDate: new Date(21, 2, 2024),
+          startDate: new Date(2024, 2, 21),
           offset: new Date().getTimezoneOffset(),
           limit: 1,
         },
