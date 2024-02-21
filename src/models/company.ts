@@ -12,3 +12,16 @@ export const company = new Schema({
   updatedAt: { type: Date, default: Date.now },
   createdAt: { type: Date, default: Date.now },
 });
+
+export type Company = {
+  name: string;
+  domain?: string;
+  hs: {
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+  };
+  archived: boolean;
+  updatedAt: Date;
+  createdAt: Date;
+};
