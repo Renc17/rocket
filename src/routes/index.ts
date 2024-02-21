@@ -1,10 +1,25 @@
-import express from 'express';
-import { MongooseAdapter } from '../Mongoose';
+import { Router } from 'express';
 import { RouteHandlers } from './handlers';
 
-export const router = express.Router();
-const mongooseAdapter = MongooseAdapter.getInstance();
-const routeHandlers = new RouteHandlers(mongooseAdapter);
+export class AppRouter {
+  private static _instance: AppRouter;
+  router: Router;
+  private routeHandlers: RouteHandlers;
 
-router.route('/companies').get(routeHandlers.getCompanies);
-router.route('/companies/:id').get(routeHandlers.getCompanyById);
+  constructor() {
+    this.router = Router();
+    this.routeHandlers = new RouteHandlers();
+    this.registerRoutes();
+  }
+
+  static getInstance() {
+    if (AppRouter._instance) return AppRouter._instance;
+    AppRouter._instance = new AppRouter();
+    return AppRouter._instance;
+  }
+
+  registerRoutes() {
+    this.router.route('/companies').get(this.routeHandlers.getCompanies);
+    this.router.route('/companies/:id').get(this.routeHandlers.getCompanyById);
+  }
+}
