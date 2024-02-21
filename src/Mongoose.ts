@@ -98,6 +98,8 @@ export class MongooseAdapter {
           updatedAt: company.updatedAt,
         },
         archived: company.archived,
+        createdAt: new Date(),
+        updatedAt: new Date(),
       };
     });
   }
