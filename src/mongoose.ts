@@ -40,7 +40,7 @@ export class MongooseAdapter {
         resolve('Mongoose connected');
       });
       this.mongoose.connection.on('error', err => {
-        reject("Mongoose connection error: ', err.message");
+        reject(`Mongoose connection error: ', ${err.message}`);
       });
       this.mongoose.connection.on('disconnected', () => {
         reject('Mongoose disconnected');
