@@ -1,4 +1,4 @@
-import { MongooseAdapter } from '../Mongoose';
+import { MongooseAdapter } from '../mongoose';
 import { Request, Response } from 'express';
 
 export class RouteHandlers {

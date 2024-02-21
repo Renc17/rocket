@@ -2,7 +2,7 @@ import * as hubspot from '@hubspot/api-client';
 
 export class HubSpotSdk {
   private static instance: HubSpotSdk;
-  private hubSpotClient: hubspot.Client;
+  private readonly hubSpotClient: hubspot.Client;
 
   constructor() {
     this.hubSpotClient = new hubspot.Client({
