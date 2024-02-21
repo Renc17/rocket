@@ -1,4 +1,4 @@
-import { MongooseAdapter } from '../Mongoose';
+import { MongooseAdapter } from '../mongoose';
 import { Company } from '../models/company';
 
 module.exports = async () => {

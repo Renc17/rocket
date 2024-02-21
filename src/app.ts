@@ -1,7 +1,7 @@
 import express, { Express, Router } from 'express';
 import * as bodyParser from 'body-parser';
 import { AppRouter } from './routes';
-import { MongooseAdapter } from './Mongoose';
+import { MongooseAdapter } from './mongoose';
 import { QueueController } from './queue';
 import helmet from 'helmet';
 import cors from 'cors';
