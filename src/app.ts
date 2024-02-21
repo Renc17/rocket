@@ -9,9 +9,9 @@ import { RateLimiter } from './middlewares/rateLimiter';
 
 export class App {
   express: Express;
-  private mongooseAdapter = MongooseAdapter.getInstance();
+  private readonly mongooseAdapter = MongooseAdapter.getInstance();
   private readonly rateLimiter: RateLimiter = new RateLimiter();
-  private queueController: QueueController;
+  private readonly queueController: QueueController;
   router: Router;
 
   constructor() {
@@ -32,13 +32,13 @@ export class App {
     this.mongooseAdapter.connect();
     await this.mongooseAdapter.checkConnection();
     await this.mongooseAdapter.registerSchemas();
-    await this.mongooseAdapter.populate();
     await this.queueController.addPopulateJob();
     this.express.listen(process.env.PORT || 3000, () => {
       console.log(
         `[server]: Server is running at http://localhost:${process.env.PORT || 3000}`
       );
     });
+    await this.mongooseAdapter.populate();
   }
 
   private registerRoutes() {

@@ -6,9 +6,9 @@ import { HubSpotData } from './types';
 
 export class MongooseAdapter {
   private static instance: MongooseAdapter;
-  private mongoose: Mongoose;
+  private readonly mongoose: Mongoose;
   private connectionString: string;
-  private hubSpotSdk: HubSpotSdk;
+  private readonly hubSpotSdk: HubSpotSdk;
   models: { [name: string]: Model<any> } = {};
 
   constructor() {

@@ -4,7 +4,7 @@ import { RouteHandlers } from './handlers';
 export class AppRouter {
   private static _instance: AppRouter;
   router: Router;
-  private routeHandlers: RouteHandlers;
+  private readonly routeHandlers: RouteHandlers;
 
   constructor() {
     this.router = Router();
