@@ -4,7 +4,7 @@ export const company = new Schema({
   name: { type: String, required: true },
   domain: { type: String },
   hs: {
-    id: { type: String, required: true },
+    id: { type: String, required: true, unique: true },
     createdAt: { type: Date, required: true },
     updatedAt: { type: Date, required: true },
   },
@@ -12,16 +12,3 @@ export const company = new Schema({
   updatedAt: { type: Date, default: Date.now },
   createdAt: { type: Date, default: Date.now },
 });
-
-export type Company = {
-  name: string;
-  domain?: string;
-  hs: {
-    id: string;
-    createdAt: Date;
-    updatedAt: Date;
-  };
-  archived: boolean;
-  updatedAt: Date;
-  createdAt: Date;
-};

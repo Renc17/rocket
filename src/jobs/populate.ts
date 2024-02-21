@@ -1,5 +1,5 @@
 import { MongooseAdapter } from '../mongoose';
-import { Company } from '../models/company';
+import { Company } from '../types';
 
 module.exports = async () => {
   const mongooseAdapter = MongooseAdapter.getInstance();

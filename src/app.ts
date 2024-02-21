@@ -32,6 +32,7 @@ export class App {
     this.mongooseAdapter.connect();
     await this.mongooseAdapter.checkConnection();
     await this.mongooseAdapter.registerSchemas();
+    await this.mongooseAdapter.populate();
     await this.queueController.addPopulateJob();
     this.express.listen(process.env.PORT || 3000, () => {
       console.log(
