@@ -51,9 +51,9 @@ export class MongooseAdapter {
     this.models['Company'] = this.mongoose.model('Company', company);
   }
 
-  async populate() {
+  async populate(options?: { after?: string }) {
     let data = await this.hubSpotSdk
-      .getAllCompanies({ limit: 100 })
+      .getAllCompanies({ limit: 100, after: options?.after })
       .then(companies => {
         return {
           next: companies.paging?.next?.after,
